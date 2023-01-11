@@ -1,8 +1,12 @@
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
 import { GoogleIcon, WarningIcon } from "../components/icons";
+import useAuth from "../data/hook/useAuth";
 
 export default function Authentication() {
+
+    const {user, loginGoogle} = useAuth()
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -69,7 +73,7 @@ export default function Authentication() {
                 <hr className="w-full my-6 border-gray-300" />
 
                 <button
-                    onClick={submit}
+                    onClick={loginGoogle}
                     className={`
             flex items-center justify-center
             w-full bg-gray-300 hover:bg-gray-200
