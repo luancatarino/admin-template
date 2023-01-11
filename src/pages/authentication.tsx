@@ -1,11 +1,11 @@
+import Image from "next/image";
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
 import { GoogleIcon, WarningIcon } from "../components/icons";
 import useAuth from "../data/hook/useAuth";
 
 export default function Authentication() {
-
-    const {user, loginGoogle} = useAuth()
+    const { user, loginGoogle } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -28,7 +28,9 @@ export default function Authentication() {
     return (
         <div className="flex h-screen items-center justify-center">
             <div className="hidden md:block md:w-1/2 lg:w-2/3">
-                <img
+                <Image
+                    width={10000}
+                    height={10000}
                     src="https://source.unsplash.com/random"
                     alt="Authentication Page Image"
                     className="h-screen w-full object-cover"
