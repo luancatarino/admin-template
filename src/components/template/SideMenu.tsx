@@ -1,8 +1,11 @@
+import useAuth from "../../data/hook/useAuth";
 import { BellIcon, HomeIcon, LogoutIcon, SettingsIcon } from "../icons";
 import ItemMenu from "./ItemMenu";
 import Logo from "./Logo";
 
 export default function SideMenu() {
+    const { logout } = useAuth();
+
     return (
         <aside
             className={`
@@ -29,7 +32,7 @@ export default function SideMenu() {
                 <ItemMenu
                     text="Logout"
                     icon={LogoutIcon}
-                    onClick={() => console.log("logout")}
+                    onClick={logout}
                     className={`
                     text-red-600  dark:text-red-500
                     hover:bg-red-500 hover:text-white                   

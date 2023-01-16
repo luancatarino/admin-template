@@ -1,11 +1,14 @@
-import firebase from "../../firebase/config";
+import Cookies from "js-cookie";
 import Router from "next/router";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import firebase from "../../firebase/config";
 import User from "../../model/User";
 
 interface AuthContextProps {
     user?: User;
+    loading?: any;
     loginGoogle?: () => Promise<void>;
+    logout?: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps>({});
@@ -22,24 +25,72 @@ async function userNormalized(userFirebase: firebase.User): Promise<User> {
     };
 }
 
+const cookieManager = (logged: any) => {
+    if (logged) {
+        Cookies.set("admin-template-auth", logged, { expires: 7 });
+    } else {
+        Cookies.remove("admin-template-auth");
+    }
+};
+
 export function AuthProvider(props: any) {
     const [user, setUser] = useState<User>(null);
+    const [loading, setLoading] = useState(true);
 
-    async function loginGoogle() {
-        const resp = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
-
-        if (resp.user?.email) {
-            const newUser = await userNormalized(resp.user);
-            setUser(newUser);
-            Router.push("/");
+    const configureSession = async (userFirebase: any) => {
+        if (userFirebase?.email) {
+            const user = await userNormalized(userFirebase);
+            setUser(user);
+            cookieManager(true);
+            setLoading(false);
+            return user.email;
+        } else {
+            setUser(null);
+            cookieManager(false);
+            setLoading(false);
+            return false;
         }
-    }
+    };
+
+    const loginGoogle = async () => {
+        try {
+            setLoading(true);
+            const resp = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+
+            configureSession(resp.user);
+            Router.push("/");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const logout = async () => {
+        try {
+            setLoading(true);
+            await firebase.auth().signOut();
+            await configureSession(null);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (Cookies.get("admin-template-auth")) {
+            const cancel = firebase.auth().onIdTokenChanged(configureSession);
+
+            return () => cancel();
+        } else {
+            setLoading(false);
+        }
+    }, []);
 
     return (
         <AuthContext.Provider
             value={{
                 user,
+                loading,
                 loginGoogle,
+                logout,
             }}
         >
             {props.children}
