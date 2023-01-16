@@ -5,7 +5,7 @@ import { GoogleIcon, WarningIcon } from "../components/icons";
 import useAuth from "../data/hook/useAuth";
 
 export default function Authentication() {
-    const { user, loginGoogle } = useAuth();
+    const { register, login, loginGoogle } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -17,11 +17,15 @@ export default function Authentication() {
         setTimeout(() => setError(null), time * 1000);
     };
 
-    const submit = () => {
-        if (mode === "login") {
-            showError("An error has occurred during login!");
-        } else {
-            showError("An error has occurred during register!");
+    const submit = async () => {
+        try {
+            if (mode === "login") {
+                await login(email, password);
+            } else {
+                await register(email, password);
+            }
+        } catch (e: any) {
+            showError(e?.message ?? "Unknown Error");
         }
     };
 
