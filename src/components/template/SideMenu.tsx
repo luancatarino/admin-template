@@ -1,5 +1,5 @@
 import useAuth from "../../data/hook/useAuth";
-import { BellIcon, HomeIcon, LogoutIcon, SettingsIcon } from "../icons";
+import { BellIcon, ClipBoardIcon, HomeIcon, LogoutIcon, SettingsIcon } from "../icons";
 import ItemMenu from "./ItemMenu";
 import Logo from "./Logo";
 
@@ -25,6 +25,7 @@ export default function SideMenu() {
             </div>
             <ul className="flex-1">
                 <ItemMenu url="/" text="Home" icon={HomeIcon} />
+                <ItemMenu url="/clients" text="Clients" icon={ClipBoardIcon} />
                 <ItemMenu url="/settings" text="Settings" icon={SettingsIcon} />
                 <ItemMenu url="/notifications" text="Notifications" icon={BellIcon} />
             </ul>
