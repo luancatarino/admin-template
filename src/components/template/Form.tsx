@@ -54,16 +54,13 @@ export default function Form(props: FormProps) {
 
             <div className="flex justify-end mt-10">
                 <Button
-                    onClick={() =>
-                        props.changed?.(new Client(id, name, +taxId, +ie, +zipCode, state, city, district, street, +number))
-                    }
-                    color="blue"
+                    onClick={() => props.changed?.(new Client(name, +taxId, +ie, +zipCode, state, city, district, street, +number, id))}
                 >
                     {id ? "Save Changes" : "Save"}
                 </Button>
-                <Button onClick={props.canceled} color="gray" className="ml-2 bg-gray-500">
+                <button onClick={props.canceled} className="ml-2 bg-gray-500 px-4 py-2 rounded-md hover:bg-gray-600">
                     Cancel
-                </Button>
+                </button>
             </div>
         </div>
     );

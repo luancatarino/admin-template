@@ -22,7 +22,6 @@ export default class Client {
         number: number,
         id: string = null
     ) {
-        this.#id = id;
         this.#name = name;
         this.#taxId = taxId;
         this.#ie = ie;
@@ -32,6 +31,7 @@ export default class Client {
         this.#district = district;
         this.#street = street;
         this.#number = number;
+        this.#id = id;
     }
 
     static empty() {

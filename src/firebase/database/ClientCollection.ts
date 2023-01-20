@@ -3,7 +3,7 @@ import Client from "../../core/Clients";
 import firebase from "../config";
 
 export default class ClientCollection implements ClientRepository {
-    #converter = {
+    #converter: any = {
         toFireStore(client: Client) {
             return {
                 name: client.name,
@@ -35,7 +35,7 @@ export default class ClientCollection implements ClientRepository {
     };
 
     private collection() {
-        return firebase.firestore().collection("clients").withConverter(this.converter);
+        return firebase.firestore().collection("clients").withConverter(this.#converter);
     }
 
     async save(client: Client): Promise<Client> {
@@ -45,7 +45,7 @@ export default class ClientCollection implements ClientRepository {
         } else {
             const docRef = await this.collection().add(client);
             const doc = await docRef.get();
-            return doc.data();
+            return doc.data() as Client;
         }
     }
 
@@ -54,7 +54,7 @@ export default class ClientCollection implements ClientRepository {
     }
 
     async showAll(): Promise<Client[]> {
-        const query = this.collection().get;
-        return query.docs.map((doc) => doc.data()) ?? [];
+        const query = await this.collection().get();
+        return query.docs.map((doc: any) => doc.data()) ?? [];
     }
 }
