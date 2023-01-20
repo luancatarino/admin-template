@@ -11,7 +11,6 @@ export default class Client {
     #number?: number;
 
     constructor(
-        id: string = null,
         name: string,
         taxId: number,
         ie: number,
@@ -20,7 +19,8 @@ export default class Client {
         city: string,
         district: string,
         street: string,
-        number: number
+        number: number,
+        id: string = null
     ) {
         this.#id = id;
         this.#name = name;
@@ -35,7 +35,7 @@ export default class Client {
     }
 
     static empty() {
-        return new Client("aeae", "Client Name", 0, 0, 0, "Client Province", "Client City", "Client District", "Client Street", 0);
+        return new Client("", 0, 0, 0, "", "", "", "", 0);
     }
 
     get id() {

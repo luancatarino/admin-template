@@ -1,45 +1,58 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import Button from "../components/template/Button";
 import Form from "../components/template/Form";
 import Layout from "../components/template/Layout";
 import Table from "../components/template/Table";
+import ClientRepository from "../core/ClientRepository";
 import Client from "../core/Clients";
+import useAppData from "../data/hook/useAppData";
+import ClientCollection from "../firebase/database/ClientCollection";
 
 export default function Clients() {
-    const [show, setShow] = useState<"table" | "form">("table");
+    const repo: ClientRepository = new ClientCollection();
 
-    const clients = [
-        new Client("C1", "Mercado Pinhal", 12445, 657, 123, "Parana", "Pinhal", "Centro", "Rua A", 10),
-        new Client("C2", "Mercado Pinhal", 12445, 657, 123, "Parana", "Pinhal", "Centro", "Rua A", 10),
-        new Client("C3", "Mercado Pinhal", 12445, 657, 123, "Parana", "Pinhal", "Centro", "Rua A", 10),
-        new Client("C4", "Mercado Pinhal", 12445, 657, 123, "Parana", "Pinhal", "Centro", "Rua A", 10),
-        new Client("C5", "Mercado Pinhal", 12445, 657, 123, "Parana", "Pinhal", "Centro", "Rua A", 10),
-    ];
+    const { show, setShow, client, setClient, clients, setClients } = useAppData();
+
+    const showAll = () => {
+        repo.showAll().then((clients) => {
+            setClients(clients);
+            setShow("table");
+        });
+    };
+
+    useEffect(showAll, []);
 
     const selectedClient = (client: Client) => {
-        console.log(client.name);
+        setClient(client);
+        setShow("form");
     };
 
-    const deleteClient = (client: Client) => {
-        console.log(client.name);
+    const deleteClient = async (client: Client) => {
+        await repo.delete(client);
+        showAll();
     };
 
-    const saveClient = (client: Client) => {
-        console.log(client);
-        setShow("table")
+    const saveClient = async (client: Client) => {
+        await repo.save(client);
+        showAll();
+    };
+
+    const newClient = () => {
+        setClient(Client.empty());
+        setShow("form");
     };
 
     return (
         <Layout title="Clients" subtitle="See your clients">
             {show === "table" ? (
                 <>
-                    <Button onClick={() => setShow("form")} color="blue" className="mb-4">
+                    <Button onClick={newClient} color="blue" className="mb-4">
                         Add Client
                     </Button>
                     <Table clients={clients} selectedClient={selectedClient}></Table>
                 </>
             ) : (
-                <Form client={clients[0]} changed={saveClient} canceled={() => setShow("table")} />
+                <Form client={client} changed={saveClient} canceled={() => setShow("table")} />
             )}
         </Layout>
     );

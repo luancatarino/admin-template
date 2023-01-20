@@ -1,3 +1,4 @@
+import useAppData from "../../data/hook/useAppData";
 import useAuth from "../../data/hook/useAuth";
 import { BellIcon, ClipBoardIcon, HomeIcon, LogoutIcon, SettingsIcon } from "../icons";
 import ItemMenu from "./ItemMenu";
@@ -5,6 +6,7 @@ import Logo from "./Logo";
 
 export default function SideMenu() {
     const { logout } = useAuth();
+    const { setShow } = useAppData();
 
     return (
         <aside
@@ -25,7 +27,7 @@ export default function SideMenu() {
             </div>
             <ul className="flex-1">
                 <ItemMenu url="/" text="Home" icon={HomeIcon} />
-                <ItemMenu url="/clients" text="Clients" icon={ClipBoardIcon} />
+                <ItemMenu onClick={() => setShow("table")} url="/clients" text="Clients" icon={ClipBoardIcon} />
                 <ItemMenu url="/settings" text="Settings" icon={SettingsIcon} />
                 <ItemMenu url="/notifications" text="Notifications" icon={BellIcon} />
             </ul>
