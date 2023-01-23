@@ -1,14 +1,14 @@
 export default class Client {
     #id: string;
     #name: string;
-    #taxId?: number;
-    #ie?: number;
-    #zipCode?: number;
+    #taxId: number;
+    #ie: number;
+    #zipCode: number;
     #state: string;
-    #city?: string;
-    #district?: string;
-    #street?: string;
-    #number?: number;
+    #city: string;
+    #district: string;
+    #street: string;
+    #number: number;
 
     constructor(
         name: string,
@@ -24,6 +24,7 @@ export default class Client {
     ) {
         this.#name = name;
         this.#taxId = taxId;
+        this.#id = id;
         this.#ie = ie;
         this.#zipCode = zipCode;
         this.#state = state;
@@ -31,7 +32,6 @@ export default class Client {
         this.#district = district;
         this.#street = street;
         this.#number = number;
-        this.#id = id;
     }
 
     static empty() {

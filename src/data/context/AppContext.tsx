@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import Client from "../../core/Clients";
+import Client from "../../core/Client";
 
 interface AppContextProps {
     theme?: string;

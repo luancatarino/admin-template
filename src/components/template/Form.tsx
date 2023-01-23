@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Client from "../../core/Clients";
+import Client from "../../core/Client";
 import Button from "./Button";
 import Input from "./Input";
 

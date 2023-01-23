@@ -1,4 +1,4 @@
-import Client from "../../core/Clients";
+import Client from "../../core/Client";
 
 interface TableProps {
     clients: Client[];

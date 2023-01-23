@@ -1,10 +1,10 @@
+import Client from "../../core/Client";
 import ClientRepository from "../../core/ClientRepository";
-import Client from "../../core/Clients";
 import firebase from "../config";
 
 export default class ClientCollection implements ClientRepository {
-    #converter: any = {
-        toFireStore(client: Client) {
+    #converter = {
+        toFirestore(client: Client) {
             return {
                 name: client.name,
                 taxId: client.taxId,
@@ -17,7 +17,7 @@ export default class ClientCollection implements ClientRepository {
                 number: client.number,
             };
         },
-        fromFireStore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Client {
+        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Client {
             const data = snapshot.data(options);
             return new Client(
                 data.name,
@@ -34,10 +34,6 @@ export default class ClientCollection implements ClientRepository {
         },
     };
 
-    private collection() {
-        return firebase.firestore().collection("clients").withConverter(this.#converter);
-    }
-
     async save(client: Client): Promise<Client> {
         if (client?.id) {
             await this.collection().doc(client.id).set(client);
@@ -45,7 +41,7 @@ export default class ClientCollection implements ClientRepository {
         } else {
             const docRef = await this.collection().add(client);
             const doc = await docRef.get();
-            return doc.data() as Client;
+            return doc.data();
         }
     }
 
@@ -55,6 +51,10 @@ export default class ClientCollection implements ClientRepository {
 
     async showAll(): Promise<Client[]> {
         const query = await this.collection().get();
-        return query.docs.map((doc: any) => doc.data()) ?? [];
+        return query.docs.map((doc) => doc.data()) ?? [];
+    }
+
+    private collection() {
+        return firebase.firestore().collection("clients").withConverter(this.#converter);
     }
 }
