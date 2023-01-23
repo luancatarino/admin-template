@@ -9,11 +9,16 @@ interface HeaderProps {
 }
 
 export default function Header(props: HeaderProps) {
-    const { theme, changeTheme } = useAppData();
+    const { theme, changeTheme, headerName, client } = useAppData();
 
     return (
         <div className={`flex`}>
-            <Title title={props.title} subtitle={props.subtitle} />
+            {headerName === "clients" ? (
+                <Title title={props.title} subtitle={props.subtitle} />
+            ) : (
+                <Title title={client.name} subtitle={props.subtitle} />
+            )}
+            
             <div className={`flex flex-grow justify-end items-center`}>
                 <ButtonChangeTheme theme={theme} changeTheme={changeTheme} />
                 <AvatarUser className="ml-3" />

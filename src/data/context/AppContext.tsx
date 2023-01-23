@@ -5,7 +5,7 @@ import Sale from "../../core/Sale";
 interface AppContextProps {
     theme?: string;
     changeTheme?: () => void;
-    show?: "table" | "form" | "tableSales";
+    show?: "table" | "form" | "tableSales" | "formSale";
     setShow?: any;
     client?: Client;
     setClient?: (client: Client) => void;
@@ -14,13 +14,16 @@ interface AppContextProps {
     children?: any;
     sale?: any;
     setSale?: any;
+    headerName?: string;
+    setHeaderName?: any;
 }
 
 const AppContext = createContext<AppContextProps>({});
 
 export function AppProvider(props: AppContextProps) {
     const [theme, setTheme] = useState("dark");
-    const [show, setShow] = useState<"table" | "form" | "tableSales">("table");
+    const [show, setShow] = useState<"table" | "form" | "tableSales" | "formSale">("table");
+    const [headerName, setHeaderName] = useState<"selectedClient" | "clients">("clients");
     const [client, setClient] = useState<Client>(Client.empty());
     const [clients, setClients] = useState<Client[]>([]);
     const [sale, setSale] = useState<Sale>(Sale.empty());
@@ -47,7 +50,10 @@ export function AppProvider(props: AppContextProps) {
                 setClient,
                 clients,
                 setClients,
-                sale
+                sale,
+                setSale,
+                headerName,
+                setHeaderName,
             }}
         >
             {props.children}

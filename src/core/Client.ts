@@ -11,7 +11,7 @@ export default class Client {
     #district: string;
     #street: string;
     #number: number;
-    #sales: Sale[];
+    #sales?: Sale[];
 
     constructor(
         name: string,
@@ -23,7 +23,7 @@ export default class Client {
         district: string,
         street: string,
         number: number,
-        sales: Sale[],
+        sales?: Sale[],
         id: string = null
     ) {
         this.#name = name;

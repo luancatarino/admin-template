@@ -6,7 +6,12 @@ import Logo from "./Logo";
 
 export default function SideMenu() {
     const { logout } = useAuth();
-    const { setShow } = useAppData();
+    const { setShow, setHeaderName } = useAppData();
+    
+    const renderTable = () => {
+        setShow("table") 
+        setHeaderName("clients")
+    }
 
     return (
         <aside
@@ -26,10 +31,10 @@ export default function SideMenu() {
                 <Logo />
             </div>
             <ul className="flex-1">
-                <ItemMenu url="/" text="Home" icon={HomeIcon} />
-                <ItemMenu onClick={() => setShow("table")} url="/clients" text="Clients" icon={ClipBoardIcon} />
-                <ItemMenu url="/settings" text="Settings" icon={SettingsIcon} />
-                <ItemMenu url="/notifications" text="Notifications" icon={BellIcon} />
+                <ItemMenu onClick={() => setHeaderName("clients")} url="/" text="Home" icon={HomeIcon} />
+                <ItemMenu onClick={renderTable} url="/clients" text="Clients" icon={ClipBoardIcon} />
+                <ItemMenu onClick={() => setHeaderName("clients")} url="/settings" text="Settings" icon={SettingsIcon} />
+                <ItemMenu onClick={() => setHeaderName("clients")} url="/notifications" text="Notifications" icon={BellIcon} />
             </ul>
             <ul>
                 <ItemMenu

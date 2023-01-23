@@ -4,13 +4,13 @@ import Sale from "../../core/Sale";
 import Button from "./Button";
 import Input from "./Input";
 
-interface FormProps {
+interface FormSaleProps {
     client: Client;
-    changed?: (client: Client) => void;
+    changed?: (sale: Sale) => void;
     canceled?: () => void;
 }
 
-export default function Form(props: FormProps) {
+export default function FormSale(props: FormSaleProps) {
     const id = props.client?.id;
 
     const [name, setName] = useState(props.client?.name ?? "");
@@ -55,11 +55,11 @@ export default function Form(props: FormProps) {
             </div>
 
             <div className="flex justify-end mt-10">
-                <Button
+                {/* <Button
                     onClick={() => props.changed?.(new Client(name, +taxId, +ie, +zipCode, state, city, district, street, +number, sales, id))}
                 >
                     {id ? "Save Changes" : "Save"}
-                </Button>
+                </Button> */}
                 <button onClick={props.canceled} className="ml-2 bg-gray-500 px-4 py-2 rounded-md hover:bg-gray-600">
                     Cancel
                 </button>
