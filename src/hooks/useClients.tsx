@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Client from "../core/Client";
 import ClientRepository from "../core/ClientRepository";
+import Sale from "../core/Sale";
 import useAppData from "../data/hook/useAppData";
 import ClientCollection from "../firebase/database/ClientCollection";
 
@@ -20,7 +21,16 @@ export default function useClients() {
 
     const selectedClient = (client: Client) => {
         setClient(client);
+        setShow("tableSales");
+    };
+
+    const editClient = (client: Client) => {
+        setClient(client);
         setShow("form");
+    };
+
+    const editSale = (sale: Sale) => {
+         setShow("table");
     };
 
     const deleteClient = async (client: Client) => {
@@ -42,6 +52,8 @@ export default function useClients() {
         saveClient,
         newClient,
         deleteClient,
+        editClient,
         selectedClient,
+        editSale
     };
 }

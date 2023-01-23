@@ -15,6 +15,7 @@ export default class ClientCollection implements ClientRepository {
                 district: client.district,
                 street: client.street,
                 number: client.number,
+                sales: client.sales
             };
         },
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Client {
@@ -29,6 +30,7 @@ export default class ClientCollection implements ClientRepository {
                 data.district,
                 data.street,
                 data.number,
+                data.sales,
                 snapshot.id
             );
         },

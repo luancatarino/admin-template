@@ -1,3 +1,5 @@
+import Sale from "./Sale";
+
 export default class Client {
     #id: string;
     #name: string;
@@ -9,6 +11,7 @@ export default class Client {
     #district: string;
     #street: string;
     #number: number;
+    #sales: Sale[];
 
     constructor(
         name: string,
@@ -20,6 +23,7 @@ export default class Client {
         district: string,
         street: string,
         number: number,
+        sales: Sale[],
         id: string = null
     ) {
         this.#name = name;
@@ -32,10 +36,11 @@ export default class Client {
         this.#district = district;
         this.#street = street;
         this.#number = number;
+        this.#sales = sales;
     }
 
     static empty() {
-        return new Client("", 0, 0, 0, "", "", "", "", 0);
+        return new Client("", 0, 0, 0, "", "", "", "", 0, []);
     }
 
     get id() {
@@ -76,5 +81,9 @@ export default class Client {
 
     get number() {
         return this.#number;
+    }
+
+    get sales() {
+        return this.#sales;
     }
 }

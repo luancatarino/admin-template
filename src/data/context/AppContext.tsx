@@ -1,25 +1,29 @@
 import { createContext, useEffect, useState } from "react";
 import Client from "../../core/Client";
+import Sale from "../../core/Sale";
 
 interface AppContextProps {
     theme?: string;
     changeTheme?: () => void;
-    show?: "table" | "form";
+    show?: "table" | "form" | "tableSales";
     setShow?: any;
     client?: Client;
     setClient?: (client: Client) => void;
     clients?: Client[];
     setClients?: any;
     children?: any;
+    sale?: any;
+    setSale?: any;
 }
 
 const AppContext = createContext<AppContextProps>({});
 
 export function AppProvider(props: AppContextProps) {
     const [theme, setTheme] = useState("dark");
-    const [show, setShow] = useState<"table" | "form">("table");
+    const [show, setShow] = useState<"table" | "form" | "tableSales">("table");
     const [client, setClient] = useState<Client>(Client.empty());
     const [clients, setClients] = useState<Client[]>([]);
+    const [sale, setSale] = useState<Sale>(Sale.empty());
 
     const changeTheme = () => {
         const newTheme = theme === "" ? "dark" : "";
@@ -43,6 +47,7 @@ export function AppProvider(props: AppContextProps) {
                 setClient,
                 clients,
                 setClients,
+                sale
             }}
         >
             {props.children}
