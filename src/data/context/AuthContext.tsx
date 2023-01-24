@@ -1,7 +1,17 @@
+import {
+    createUserWithEmailAndPassword,
+    getAuth,
+    getIdToken,
+    GoogleAuthProvider,
+    onIdTokenChanged,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signOut,
+    User as FirebaseUser,
+} from "firebase/auth";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import { createContext, useEffect, useState } from "react";
-import firebase from "../../firebase/config";
 import User from "../../model/User";
 
 interface AuthContextProps {
@@ -15,8 +25,8 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps>({});
 
-async function userNormalized(userFirebase: firebase.User): Promise<User> {
-    const token = await userFirebase.getIdToken();
+async function userNormalized(userFirebase: FirebaseUser): Promise<User> {
+    const token = await getIdToken(userFirebase);
     return {
         uid: userFirebase.uid,
         name: userFirebase.displayName,
@@ -38,6 +48,7 @@ const cookieManager = (logged: any) => {
 export function AuthProvider(props: any) {
     const [user, setUser] = useState<User>(null);
     const [loading, setLoading] = useState(true);
+    const auth = getAuth();
 
     const configureSession = async (userFirebase: any) => {
         if (userFirebase?.email) {
@@ -57,7 +68,7 @@ export function AuthProvider(props: any) {
     const register = async (email: string, password: string) => {
         try {
             setLoading(true);
-            const resp = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            const resp = await createUserWithEmailAndPassword(auth, email, password);
 
             await configureSession(resp.user);
             Router.push("/");
@@ -69,7 +80,7 @@ export function AuthProvider(props: any) {
     const login = async (email: string, password: string) => {
         try {
             setLoading(true);
-            const resp = await firebase.auth().signInWithEmailAndPassword(email, password);
+            const resp = await signInWithEmailAndPassword(auth, email, password);
 
             await configureSession(resp.user);
             Router.push("/");
@@ -81,7 +92,7 @@ export function AuthProvider(props: any) {
     const loginGoogle = async () => {
         try {
             setLoading(true);
-            const resp = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+            const resp = await signInWithPopup(auth, new GoogleAuthProvider());
 
             await configureSession(resp.user);
             Router.push("/");
@@ -93,7 +104,7 @@ export function AuthProvider(props: any) {
     const logout = async () => {
         try {
             setLoading(true);
-            await firebase.auth().signOut();
+            await signOut(auth);
             await configureSession(null);
         } finally {
             setLoading(false);
@@ -102,9 +113,10 @@ export function AuthProvider(props: any) {
 
     useEffect(() => {
         if (Cookies.get("admin-template-auth")) {
-            const cancel = firebase.auth().onIdTokenChanged(configureSession);
+            const cancel = onIdTokenChanged(auth, configureSession);
 
             return () => cancel();
+            setLoading(false);
         } else {
             setLoading(false);
         }

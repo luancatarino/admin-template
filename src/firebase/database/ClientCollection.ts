@@ -1,6 +1,18 @@
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    getFirestore,
+    QueryDocumentSnapshot,
+    setDoc,
+    SnapshotOptions,
+} from "firebase/firestore";
 import Client from "../../core/Client";
 import ClientRepository from "../../core/ClientRepository";
-import firebase from "../config";
+import firebaseApp from "../config";
 
 export default class ClientCollection implements ClientRepository {
     #converter = {
@@ -15,10 +27,10 @@ export default class ClientCollection implements ClientRepository {
                 district: client.district,
                 street: client.street,
                 number: client.number,
-                sales: client.sales
+                sales: client.sales,
             };
         },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Client {
+        fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Client {
             const data = snapshot.data(options);
             return new Client(
                 data.name,
@@ -38,25 +50,28 @@ export default class ClientCollection implements ClientRepository {
 
     async save(client: Client): Promise<Client> {
         if (client?.id) {
-            await this.collection().doc(client.id).set(client);
+            const docRef = doc(this.collection(), client.id);
+            await setDoc(docRef, client);
             return client;
         } else {
-            const docRef = await this.collection().add(client);
-            const doc = await docRef.get();
+            const docRef = await addDoc(this.collection(), client);
+            const doc = await getDoc(docRef);
             return doc.data();
         }
     }
 
     async delete(client: Client): Promise<void> {
-        return this.collection().doc(client.id).delete();
+        const docRef = doc(this.collection(), client.id);
+        return deleteDoc(docRef);
     }
 
     async showAll(): Promise<Client[]> {
-        const query = await this.collection().get();
-        return query.docs.map((doc) => doc.data()) ?? [];
+        const query = await getDocs(this.collection());
+        return query.docs.map((doc) => doc.data());
     }
 
     private collection() {
-        return firebase.firestore().collection("clients").withConverter(this.#converter);
+        const db = getFirestore(firebaseApp);
+        return collection(db, "clients").withConverter(this.#converter);
     }
 }

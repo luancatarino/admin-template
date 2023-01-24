@@ -49,6 +49,7 @@ export default function useClients() {
     const newSale = () => {
         setSale(Sale.empty());
         setShow("formSale");
+        setHeaderName("selectedClient")
     };
 
     const editSale = (sale: Sale) => {

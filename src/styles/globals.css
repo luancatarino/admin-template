@@ -9,6 +9,7 @@
     padding: 0;
     margin: 0;
     font-family: 'Poppins', sans-serif;
+    
 
 }
 
@@ -16,6 +17,7 @@ html,
 body {
     max-width: 100vw;
     overflow-x: hidden;
+    background: rgba(0, 0, 0, 0.7)
 }
 
 a {
