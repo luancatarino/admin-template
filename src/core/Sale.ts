@@ -2,22 +2,23 @@ export default class Sale {
     #id: string;
     #date: string;
     #quantity: number;
+    #unit: string;
     #value: number;
     #bonus: number;
-    #total: number
-    
+    #total: number;
 
-    constructor(date: string, quantity: number, value: number, bonus: number, total: number, id: string = null) {
+    constructor(date: string, quantity: number, unit: string, value: number, bonus: number, total: number, id: string = null) {
         this.#id = id;
-        this.#date = date
+        this.#date = date;
         this.#quantity = quantity;
+        this.#unit = unit;
         this.#value = value;
         this.#bonus = bonus;
         this.#total = total;
     }
 
     static empty() {
-        return new Sale( "", 0, 0, 0, 0);
+        return new Sale("", 0, "", 0, 0, 0);
     }
 
     get id() {
@@ -31,6 +32,10 @@ export default class Sale {
         return this.#quantity;
     }
 
+    get unit() {
+        return this.#unit;
+    }
+
     get value() {
         return this.#value;
     }
@@ -42,6 +47,4 @@ export default class Sale {
     get total() {
         return this.#total;
     }
-
-    
 }

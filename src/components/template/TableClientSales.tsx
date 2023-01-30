@@ -13,6 +13,7 @@ export default function TableClientSales(props: TableClientSalesProps) {
             <tr>
                 <th className="text-left p-4">Date</th>
                 <th className="text-left p-4">Quantity</th>
+                <th className="text-left p-4">Unit</th>
                 <th className="text-left p-4">Value</th>
                 <th className="text-left p-4">Bonus</th>
                 <th className="text-left p-4">Total</th>
@@ -25,13 +26,14 @@ export default function TableClientSales(props: TableClientSalesProps) {
         return props.client.sales?.map((sale, i) => {
             return (
                 <tr
-                    key={sale.id}
+                    key={i}
                     className={`
                     ${i % 2 === 0 ? "bg-gray-200" : "bg-gray-300"} hover:bg-gradient-to-r from-gray-600 to-gray-300 text-gray-700 
                 `}
                 >
-                    <td className="cursor-pointer hover:text-gray-100 text-left p-4">{sale.quantity}</td>
                     <td className="text-left p-4">{sale.date}</td>
+                    <td className="text-left p-4">{sale.quantity}</td>
+                    <td className="text-left p-4">{sale.unit}</td>
                     <td className="text-left p-4">{sale.value}</td>
                     <td className="text-left p-4">{sale.bonus}</td>
                     <td className="text-left p-4">{sale.total}</td>

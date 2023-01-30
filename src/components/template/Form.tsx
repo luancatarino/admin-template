@@ -22,7 +22,7 @@ export default function Form(props: FormProps) {
     const [district, setDistrict] = useState(props.client?.district ?? "");
     const [street, setStreet] = useState(props.client?.street ?? "");
     const [number, setNumber] = useState(props.client?.number ?? "");
-    const [sales, setSales] = useState<Sale[]>(props.client?.sales ?? ([]));
+    const [sales, setSales] = useState<Sale[]>(props.client?.sales ?? []);
 
     return (
         <div>
@@ -56,7 +56,9 @@ export default function Form(props: FormProps) {
 
             <div className="flex justify-end mt-10">
                 <Button
-                    onClick={() => props.changed?.(new Client(name, +taxId, +ie, +zipCode, state, city, district, street, +number, sales, id))}
+                    onClick={() =>
+                        props.changed?.(new Client(name, +taxId, +ie, +zipCode, state, city, district, street, +number, sales, id))
+                    }
                 >
                     {id ? "Save Changes" : "Save"}
                 </Button>

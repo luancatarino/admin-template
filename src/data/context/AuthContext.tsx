@@ -9,6 +9,7 @@ import {
     signOut,
     User as FirebaseUser,
 } from "firebase/auth";
+import firebaseApp from "../../firebase/config";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import { createContext, useEffect, useState } from "react";
@@ -24,6 +25,8 @@ interface AuthContextProps {
 }
 
 const AuthContext = createContext<AuthContextProps>({});
+const auth = getAuth(firebaseApp);
+
 
 async function userNormalized(userFirebase: FirebaseUser): Promise<User> {
     const token = await getIdToken(userFirebase);
@@ -48,7 +51,7 @@ const cookieManager = (logged: any) => {
 export function AuthProvider(props: any) {
     const [user, setUser] = useState<User>(null);
     const [loading, setLoading] = useState(true);
-    const auth = getAuth();
+    
 
     const configureSession = async (userFirebase: any) => {
         if (userFirebase?.email) {
@@ -64,6 +67,8 @@ export function AuthProvider(props: any) {
             return false;
         }
     };
+
+    
 
     const register = async (email: string, password: string) => {
         try {

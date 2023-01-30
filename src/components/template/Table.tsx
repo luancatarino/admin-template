@@ -1,5 +1,5 @@
 import Client from "../../core/Client";
-import { EditIcon } from "../icons"
+import { EditIcon } from "../icons";
 
 interface TableProps {
     clients: Client[];
@@ -25,15 +25,25 @@ export default function Table(props: TableProps) {
                 <tr
                     key={client.id}
                     className={`
-                    ${i % 2 === 0 ? "bg-gray-200" : "bg-gray-300"} hover:bg-gradient-to-r from-gray-600 to-gray-300 text-gray-700 
+                    ${i % 2 === 0 ? "bg-gray-200" : "bg-gray-300"} hover:bg-gradient-to-r from-gray-500 to-gray-300 text-gray-700 
                 `}
                 >
-                    <td className="cursor-pointer hover:text-gray-100 text-left p-4" onClick={() => props.selectedClient(client)}>
+                    <td
+                        onClick={() => props.selectedClient(client)}
+                        className="text-left p-4 text-gray-700 hover:text-blue-300 cursor-pointer"
+                    >
                         {client.name}
                     </td>
                     <td className="text-left p-4">{client.taxId}</td>
                     <td className="text-left p-4">{client.city}</td>
-                    <td className="flex justify-center items-center py-4" onClick={() => props.editClient?.(client)}>{EditIcon(6)}</td>
+                    <td className="flex justify-center items-center py-4">
+                        <button
+                            onClick={() => props.editClient?.(client)}
+                            className="bg-transparent text-gray-700 hover:text-blue-400 hover:bg-transparent"
+                        >
+                            {EditIcon(6)}
+                        </button>
+                    </td>
                 </tr>
             );
         });

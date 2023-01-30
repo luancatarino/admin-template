@@ -41,13 +41,15 @@ export default function Authentication() {
                 />
             </div>
             <div className="m-10 w-full md:w-1/2 lg:w-1/3">
-                <h1
-                    className={`
-                        text-3xl font-bold mb-5
+                <div className="flex justify-center items-center">
+                    <h1
+                        className={`
+                        text-3xl font-bold mb-5 text-gray-300
         `}
-                >
-                    {mode === "login" ? "Log Into Your Account" : "Sign Up"}
-                </h1>
+                    >
+                        {mode === "login" ? "Log Into Your Account" : "Sign Up"}
+                    </h1>
+                </div>
 
                 {error ? (
                     <div
@@ -90,8 +92,7 @@ export default function Authentication() {
                 </button>
 
                 {mode === "login" ? (
-                    <p className="mt-5">
-                        New here?
+                    <p className="flex justify-center items-center mt-5 ">
                         <a
                             onClick={() => setMode("register")}
                             className={`
@@ -99,7 +100,6 @@ export default function Authentication() {
                             cursor-pointer
                         `}
                         >
-                            {" "}
                             Create a new account
                         </a>
                     </p>

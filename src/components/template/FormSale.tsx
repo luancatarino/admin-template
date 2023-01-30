@@ -1,65 +1,49 @@
 import { useState } from "react";
-import Client from "../../core/Client";
 import Sale from "../../core/Sale";
+import Client from "../../core/Client";
 import Button from "./Button";
 import Input from "./Input";
 
+
 interface FormSaleProps {
+    sale: Sale;
     client: Client;
-    changed?: (sale: Sale) => void;
+    changed?: (client: Client, sale: Sale) => void;
     canceled?: () => void;
 }
 
 export default function FormSale(props: FormSaleProps) {
-    const id = props.client?.id;
+    
+    const id = props.sale?.id;
 
-    const [name, setName] = useState(props.client?.name ?? "");
-    const [taxId, setTaxId] = useState(props.client?.taxId ?? "");
-    const [ie, setIE] = useState(props.client?.ie ?? "");
-    const [zipCode, setZipCode] = useState(props.client?.zipCode ?? "");
-    const [state, setState] = useState(props.client?.state ?? "");
-    const [city, setCity] = useState(props.client?.city ?? "");
-    const [district, setDistrict] = useState(props.client?.district ?? "");
-    const [street, setStreet] = useState(props.client?.street ?? "");
-    const [number, setNumber] = useState(props.client?.number ?? "");
-    const [sales, setSales] = useState<Sale[]>(props.client?.sales ?? ([]));
+    const currentSale = props.sale.id;
+
+    const [date, setDate] = useState(props.sale?.date ?? "");
+    const [quantity, setQuantity] = useState(props.sale?.quantity ?? 0);
+    const [unit, setUnit] = useState(props.sale?.unit ?? "");
+    const [value, setValue] = useState(props.sale?.value ?? 0);
+    const [bonus, setBonus] = useState(props.sale?.bonus ?? 0);
+    const [total, setTotal] = useState(props.sale?.total ?? 0);
 
     return (
         <div>
             <div
                 className={`
-                flex flex-row items-center mb-5
+                flex flex-row items-center justify-between mb-5
             `}
             >
-                <Input className="grow" text="Name" onChange={setName} type="text" value={name} />
-                <Input className="ml-3" text="Tax ID" onChange={setTaxId} type="number" value={taxId} />
-                <Input className="ml-3" text="Inscrição Estadual" onChange={setIE} type="number" value={ie} />
-            </div>
-            <div
-                className={`
-                flex flex-row items-center mb-5
-            `}
-            >
-                <Input text="Zip Code" onChange={setZipCode} type="number" value={zipCode} />
-                <Input className="ml-3" text="State" onChange={setState} type="text" value={state} />
-                <Input className="grow ml-3" text="City" onChange={setCity} type="text" value={city} />
-            </div>
-            <div
-                className={`
-                flex flex-row items-center
-            `}
-            >
-                <Input text="District" onChange={setDistrict} type="text" value={district} />
-                <Input className="grow ml-3" text="Street" onChange={setStreet} type="text" value={street} />
-                <Input className="ml-3" text="Number" onChange={setNumber} type="number" value={number} />
+                <Input text="Date" onChange={setDate} type="text" value={date} />
+                <Input text="Quantity" onChange={setQuantity} type="number" value={quantity} />
+                <Input text="Unit" onChange={setUnit} type="select" value={unit} />
+                <Input text="Value" onChange={setValue} type="number" value={value} />
+                <Input text="Total" onChange={setTotal} type="number" value={total} />
+                <Input text="Bonus" onChange={setBonus} type="number" value={bonus} />
             </div>
 
             <div className="flex justify-end mt-10">
-                {/* <Button
-                    onClick={() => props.changed?.(new Client(name, +taxId, +ie, +zipCode, state, city, district, street, +number, sales, id))}
-                >
+                <Button onClick={() => props.changed?.(props.client, new Sale(date, +quantity, unit, +value, +bonus, +total, id))}>
                     {id ? "Save Changes" : "Save"}
-                </Button> */}
+                </Button>
                 <button onClick={props.canceled} className="ml-2 bg-gray-500 px-4 py-2 rounded-md hover:bg-gray-600">
                     Cancel
                 </button>

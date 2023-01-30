@@ -5,10 +5,12 @@ import Sale from "../core/Sale";
 import useAppData from "../data/hook/useAppData";
 import ClientCollection from "../firebase/database/ClientCollection";
 
+
 export default function useClients() {
     const repo: ClientRepository = new ClientCollection();
 
-    const { setShow, setClient, setClients, setSale, setHeaderName } = useAppData();
+
+    const { setShow, setClient, setClients, setSale, setHeaderName} = useAppData();
 
     const showAll = () => {
         repo.showAll().then((clients) => {
@@ -46,18 +48,21 @@ export default function useClients() {
         setShow("form");
     };
 
-    const newSale = () => {
-        setSale(Sale.empty());
+    const newSale = async () => {      
+        setSale(Sale.empty())
         setShow("formSale");
         setHeaderName("selectedClient")
+        
     };
 
     const editSale = (sale: Sale) => {
+        setSale(sale)
         setShow("formSale");
    };
 
-   const saveSale= async (sale: Sale) => {
-        return console.log("Sale Saved")
+   const saveNewSale= async (client: Client, sale: any) => {
+        
+        await repo.saveSale(client, sale)
 };
 
     return {
@@ -68,6 +73,6 @@ export default function useClients() {
         selectedClient,
         editSale,
         newSale,
-        saveSale
+        saveNewSale
     };
 }

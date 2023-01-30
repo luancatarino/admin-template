@@ -1,17 +1,17 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 
 function getFirebaseApp() {
-    if (getApps().length === 0) {
+    if (!getApps().length) {
         return initializeApp({
-                    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-                    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-                    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
-        })
+            apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+            authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+            projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        });
     } else {
-        return getApp()
+        return getApp();
     }
 }
 
-const firebaseApp = getFirebaseApp()
+const firebaseApp = getFirebaseApp();
 
-export default firebaseApp
+export default firebaseApp;

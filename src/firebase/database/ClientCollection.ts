@@ -1,5 +1,6 @@
 import {
     addDoc,
+    arrayUnion,
     collection,
     deleteDoc,
     doc,
@@ -9,9 +10,11 @@ import {
     QueryDocumentSnapshot,
     setDoc,
     SnapshotOptions,
+    updateDoc,
 } from "firebase/firestore";
 import Client from "../../core/Client";
 import ClientRepository from "../../core/ClientRepository";
+import Sale from "../../core/Sale";
 import firebaseApp from "../config";
 
 export default class ClientCollection implements ClientRepository {
@@ -52,6 +55,7 @@ export default class ClientCollection implements ClientRepository {
         if (client?.id) {
             const docRef = doc(this.collection(), client.id);
             await setDoc(docRef, client);
+            console.log(client);
             return client;
         } else {
             const docRef = await addDoc(this.collection(), client);
@@ -68,6 +72,16 @@ export default class ClientCollection implements ClientRepository {
     async showAll(): Promise<Client[]> {
         const query = await getDocs(this.collection());
         return query.docs.map((doc) => doc.data());
+    }
+
+    async saveSale(client: Client, sale: Sale) {
+        // const db = getFirestore(firebaseApp);
+        const docRef = doc(this.collection(), client.id);
+        console.log(sale);
+
+        return updateDoc(docRef, {
+            sales: arrayUnion(JSON.stringify(sale)),
+        });
     }
 
     private collection() {
